@@ -1,0 +1,94 @@
+{
+    "code": 0,
+    "msg": "请求成功",
+    "data": {
+        "questionList": [
+            {
+                "qId": 676,
+                "qTypeId": 1,
+                "qTypeName": "单选题",
+                "qBodyList": [
+                    {
+                        "url": "https://test-imgs.genshuixue.com/938834_mgbtudm0.jpeg",
+                        "id": 19283,
+                        "type": 1,
+                        "content": "文字",
+                        "storageId": 1283974,
+                        "second": 76,
+                        "fileMd5": "7fg89d76g876dg8796dg"
+                    }
+                ],
+                "qSlectionStructuredList": [
+                    {
+                        "optionIndex": "A",
+                        "qSelection": [
+                            {
+                                "type": 1,
+                                "content": "\\(0\\)"
+                            },
+                            {
+                                "type": 2,
+                                "url": "http://oss-cn-beijing.aliyuncs.com/jiaoyanwang/privateTk/releaseimage/1/d508be9013b111e9412c62070dc8923f.jpeg"
+                            }
+                        ]
+                    },
+                    {
+                        "optionIndex": "B",
+                        "qSelection": [
+                            {
+                                "type": 1,
+                                "content": "\\(1\\)"
+                            },
+                            {
+                                "type": 2,
+                                "url": "http://oss-cn-beijing.aliyuncs.com/jiaoyanwang/privateTk/releaseimage/1/d7b1be8013b111e9ccc1fd5534f45775.jpeg"
+                            }
+                        ]
+                    },
+                    {
+                        "optionIndex": "C",
+                        "qSelection": [
+                            {
+                                "type": 1,
+                                "content": "\\(2\\)"
+                            },
+                            {
+                                "type": 2,
+                                "url": "http://oss-cn-beijing.aliyuncs.com/jiaoyanwang/privateTk/releaseimage/1/db4349b013b111e9412c62070dc8923f.jpeg"
+                            }
+                        ]
+                    },
+                    {
+                        "optionIndex": "D",
+                        "qSelection": [
+                            {
+                                "type": 1,
+                                "content": "\\(3\\)"
+                            },
+                            {
+                                "type": 2,
+                                "url": "http://oss-cn-beijing.aliyuncs.com/jiaoyanwang/privateTk/releaseimage/1/de6fd18013b111e9ccc1fd5534f45775.jpeg"
+                            }
+                        ]
+                    }
+                ],
+
+                "qAnswer": "A",
+                "qAnswerInfoList": [
+                    {
+                        "type": 1,
+                        "content": "试题解析"
+                    }
+                ],
+                "qSelectionList": [
+                    {
+                        "optionIndex": "A",
+                        "content": "选项A内容"
+                    }
+                ],
+                "limitTime": 60,
+                "status": 0
+            }
+        ]
+    }
+}
