@@ -1,7 +1,7 @@
 typeof [] // 'object'
 
 let arr = [];
-arr.instanceof(Array)  //true
+arr instanceof Array  //true
 
 arr.constructor = Array  // true
 
