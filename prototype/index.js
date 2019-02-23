@@ -22,3 +22,4 @@ Dog.prototype = Object.create(Animal.prototype, {
 let jack = new Dog('jack');
 
 jack.getName();
+

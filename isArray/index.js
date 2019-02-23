@@ -3,7 +3,7 @@ typeof [] // 'object'
 let arr = [];
 arr instanceof Array  //true
 
-arr.constructor = Array  // true
+arr.constructor === Array  // true
 
 Array.isArray(arr)  // true
 

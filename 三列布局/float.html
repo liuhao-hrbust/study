@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>浮动三列布局</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+    <style>
+        body {
+            min-width: 800px;
+        }
+        div {
+            min-height: 300px;
+        }
+        .left {
+            float: left;
+            width: 300px;
+            background-color: yellow;
+        }
+        .right {
+            width: 300px;
+            float: right;
+            background-color: blue;
+        }
+        .main {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div class="left">这是左侧</div>
+        <div class="right">这是右侧</div>
+        <div class="main"><h1>这是中间主体</h1></div>
+    </section>
+    <footer>
+        <h1>特点：</h1>
+        <ul>
+            <li>兼容性好</li>
+            <li>left和right必须写在main上面，否则会被挤下去</li>
+        </ul>
+    </footer>
+</body>
+</html>
