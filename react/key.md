@@ -15,4 +15,4 @@
 > 参考资料
 > [[React技术内幕] key带来了什么](https://juejin.im/post/59abb01c518825243f1b6dad)
 > [React中key的用处](https://www.jianshu.com/p/0c9a8a90c40d)
-> [React 源码剖析系列 － 不可思议的 react diff](https://www.zhihu.com/search?type=content&q=react%20diff)
+> [React 源码剖析系列 － 不可思议的 react diff](https://zhuanlan.zhihu.com/p/20346379)
