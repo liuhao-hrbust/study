@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>压缩图片demo</title>
+        <style>
+            /* img {
+                width: 60%;
+            } */
+        </style>
+    </head>
+    <body>
+        <img id="img" src="" />
+        <input id="file" type="file" onchange="compress()" />
+    </body>
+    <script>
+        const minQuality = 0.3;
+
+        function compressImg(file, options = {}) {
+            const {
+                targetWidth = null,
+                targetHeight = null,
+                targetQuality = 0.6,
+                maxSize = 8388608,
+            } = options;
+
+            this.options = {
+                targetWidth,
+                targetHeight,
+                targetQuality,
+                maxSize,
+            };
+
+            this.file = file;
+
+            return new Promise((resolve, reject) => {
+                if (file || file.size) {
+                    // 原文件满足体积限制
+                    if (file.size <= maxSize) {
+                        resolve(file);
+
+                        console.log(options);
+                        return;
+                    }
+                } else {
+                    reject({
+                        msg:
+                            'file parameter error, can not read file or file.size.',
+                    });
+
+                    return;
+                }
+
+                const err = this.abilityCheck();
+
+                if (typeof err === 'string') {
+                    reject(err);
+                    return;
+                }
+
+                this.resizeImg().then((res) => {
+                    // resolve(convertToBlob(res, 'image/jpeg'));
+                    console.log(this.options);
+                    resolve(res);
+                });
+            });
+        }
+
+        // // TODO: 参数校验
+        // parameterCheck = (file, options) => {
+
+        // }
+
+        compressImg.prototype.abilityCheck = function () {
+            const canvas = document.createElement('canvas');
+
+            if (!canvas || !canvas.getContext) {
+                return 'browser does not support canvas';
+            }
+
+            if (!window.FileReader) {
+                return 'browser does not support FileReader';
+            }
+
+            return 0;
+        };
+
+        compressImg.prototype.resizeImg = function () {
+            return new Promise((resolve, reject) => {
+                const { targetQuality, maxSize } = this.options;
+
+                const reader = new FileReader();
+                reader.readAsDataURL(this.file);
+
+                reader.onload = () => {
+                    const img = new Image();
+
+                    img.src = reader.result;
+
+                    img.onerror = () => {
+                        const err = new Error('image load error');
+                        reject(err);
+                        throw err;
+                    };
+
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+
+                        const { width: fileWidth, height: fileHeight } = img;
+
+                        canvas.width = fileWidth;
+                        canvas.height = fileHeight;
+                        ctx.drawImage(img, 0, 0, fileWidth, fileHeight);
+                        const base64Data = canvas.toDataURL(
+                            'image/jpeg',
+                            targetQuality
+                        );
+
+                        if (base64Data.length > maxSize) {
+                            if (targetQuality > minQuality) {
+                                this.options.targetQuality -= 0.1;
+                                resolve(this.resizeImg());
+                            } else if (targetQuality <= minQuality) {
+                                console.log(
+                                    '压缩质量到达预定值，图片大小未达标'
+                                );
+                                return;
+                            }
+                        }
+
+                        resolve(base64Data);
+                    };
+                };
+            });
+        };
+
+        function convertToBlob(base64Str, fileType) {
+            const base64 = window.atob(base64Str);
+            const len = base64.length;
+            const buff = new ArrayBuffer(len);
+            const uarr = new Uint8Array(buff);
+
+            for (let i = 0; i < len; i++) {
+                uarr[i] = base64.charCodeAt(i);
+            }
+
+            let blob = null;
+
+            try {
+                blob = new Blob([buff], { type: fileType });
+            } catch (e) {
+                const BlobBuilder = (window.BlobBuilder =
+                    window.BlobBuilder ||
+                    window.WebKitBlobBuilder ||
+                    window.MozBlobBuilder ||
+                    window.MSBlobBuilder);
+
+                if (e.name === 'TypeError' && BlobBuilder) {
+                    const builder = new BlobBuilder();
+                    builder.append(buff);
+                    blob = builder.getBlob(fileType);
+                }
+            }
+
+            return blob;
+        }
+    </script>
+    <script>
+        // 对图片进行压缩
+        function compress() {
+            let fileObj = document.getElementById('file').files[0]; //上传文件的对象
+            let reader = new FileReader();
+            let image = new Image(); //新建一个img标签（还没嵌入DOM节点)
+
+            new compressImg(fileObj, {
+                maxSize: 524288
+            }).then(res => {
+                document.getElementById('img').src = res;
+            });
+
+
+                // image.onload = function () {
+                //     //压缩完成
+                //     document.getElementById('img').src = compress;
+                // }
+
+            // reader.readAsDataURL(fileObj);
+            // reader.onload = function (e) {
+            //     let image = new Image(); //新建一个img标签（还没嵌入DOM节点)
+            //     image.src = e.target.result;
+            //     image.onload = function () {
+            //         let canvas = document.createElement('canvas'),
+            //             context = canvas.getContext('2d'),
+            //             imageWidth = image.width, //压缩后图片的大小
+            //             imageHeight = image.height,
+            //             data = '';
+
+            //         canvas.width = imageWidth;
+            //         canvas.height = imageHeight;
+
+            //         context.drawImage(image, 0, 0, imageWidth, imageHeight);
+            //         data = canvas.toDataURL('image/jpeg', 0.7);
+
+            //         console.log(data.length);
+            //         //压缩完成
+            //         document.getElementById('img').src = data;
+            //     };
+            // };
+        }
+    </script>
+</html>
