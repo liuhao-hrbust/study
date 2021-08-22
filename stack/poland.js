@@ -1,48 +1,44 @@
 class Stack {
     constructor() {
-        this.item = [];
+        this.items = [];
     }
 
-    push(num) {
-        this.item.push(num);
-    }
+    push = item => {
+        this.items.push(item);
+    };
 
-    pop() {
-        return this.item.pop();
-    }
+    pop = () => this.items.pop();
 
-    isEmpty() {
-        return this.item.length === 0;
-    }
+    isEmpty = () => !this.items.length;
 
-    clear() {
-        this.item = [];
-    }
+    size = () => this.items.length;
 
-    print() {
-        console.log(this.item.join("-"));
-    }
+    clear = () => {
+        this.items = [];
+    };
 }
 
+function poland(arr) {
+    const operator = ['+', '-', '*', '/'];
 
-function calc_exp(exp) {
-    let stack = new Stack();
-    let calc = '';
-    let left , right;
-    let res = 0;
-    const options = ['+', '-', '*', '/'];
-    for (let i = 0; i < exp.length; i++) {
-        if (options.includes(exp[i])) {
-            right = stack.pop();
-            left = stack.pop();
-            calc = `${left}${exp[i]}${right}`;
-            res = Number(eval(calc));
-            stack.push(res.toString());
+    const s = new Stack();
+
+    arr.forEach(item => {
+        if (operator.includes(item)) {
+            const right = s.pop();
+            const left = s.pop();
+
+            const exprStr = `${left}${item}${right}`;
+
+            s.push(eval(exprStr) + '');
         } else {
-            stack.push(exp[i]);
+            s.push(item);
         }
-    }
-    console.log(stack.pop());
+    });
+
+    return s.pop();
 }
 
-calc_exp([ '1', '4', '5', '+', '3', '+', '+', '3', '-', '9', '8', '+', '+' ]);
+var exp_1 = ["4", "13", "5", "/", "+"];
+
+console.log(poland(exp_1))

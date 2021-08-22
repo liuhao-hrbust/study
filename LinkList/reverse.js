@@ -1,22 +1,7 @@
-function reverse_iter(head) {
-    if(!head) {
-        return null;
-    }
-    let prev = null;
-    let curr = head;
-    while (curr) {
-        next = curr.next;
-        curr.next = prev;
-        prev = curr;
-        curr = next;
-    }
-    return prev;
-}
-
-var Node = function(data){
+var Node = function (data) {
     this.data = data;
     this.next = null;
-}
+};
 
 var node1 = new Node(1);
 var node2 = new Node(2);
@@ -29,27 +14,34 @@ node2.next = node3;
 node3.next = node4;
 node4.next = node5;
 
-function print(node){
+function print(node) {
     var curr_node = node;
-    while(curr_node){
+    while (curr_node) {
         console.log(curr_node.data);
         curr_node = curr_node.next;
     }
-};
-let node = reverse_digui(node1);
+}
 
-print(node);
-
-function reverse_digui(head) {
+// 迭代翻转
+function reverse_iter(head) {
     if (!head) {
         return null;
     }
 
-    if (!head.next) {
-        return head;
+    let prev = null;
+    let current = head;
+
+    while(current) {
+        let next = current.next;
+        current.next = prev;
+        prev = current;
+        current = next;
     }
-    let new_head = reverse_digui(head.next); 
-    head.next.next = head;
-    head.next = null;
-    return new_head;
+
+    return prev;
 }
+// 递归翻转
+function reverse_digui(head) {}
+
+print(reverse_iter(node1))
+

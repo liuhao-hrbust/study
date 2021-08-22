@@ -1,38 +1,44 @@
-class stack {
+class Stack {
     constructor() {
-        this.item = [];
+        this.items = [];
     }
 
-    push(num) {
-        this.item.push(num);
-    }
+    push = item => {
+        this.items.push(item);
+    };
 
-    pop() {
-        return this.item.pop();
-    }
+    pop = () => this.items.pop();
 
-    isEmpty() {
-        return this.item.length === 0;
-    }
+    isEmpty = () => !this.items.length;
 
-    clear() {
-        this.item = [];
-    }
+    size = () => this.items.length;
 
-    print() {
-        console.log(this.item.join("-"));
-    }
+    clear = () => {
+        this.items = [];
+    };
 }
 
-function matchBrackets(s) {
-    let stack = new Stack();
-    for (let i = 0; i < s.length; i++) {
-        if(s[i]==='(') {
-            stack.push(s[i]);
-        } else {
-            if (!stack.pop()) {
+function matchBrackets(str) {
+    const s = new Stack();
+
+    for (let i = 0; i < str.length; i++) {
+        const item = str[i];
+        if (item === '(') {
+            s.push(str[i]);
+        }
+
+        if (item === ')') {
+            if (s.isEmpty()) {
                 return false;
             }
+
+            s.pop();
         }
     }
+
+    return s.isEmpty();
 }
+
+console.log(matchBrackets("()()))"));
+console.log(matchBrackets("sdf(ds(ew(we)rw)rwqq)qwewe"));
+console.log(matchBrackets("()()sd()(sd()fw))("));

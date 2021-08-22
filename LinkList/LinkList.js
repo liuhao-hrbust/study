@@ -30,12 +30,12 @@ class LinkList {
 
     print() {
         let current = this.head;
-        let str = "";
+        let str = '';
         while (current) {
-            str = str + current.data + "->";
+            str = str + current.data + '->';
             current = current.next;
         }
-        str += "null";
+        str += 'null';
         console.log(str);
     }
 
@@ -121,37 +121,36 @@ class LinkList {
             } else {
                 current_node = current_node.next;
             }
-
         }
         return -1;
     }
-     // 删除尾节点
-     remove_tail = function(){
-        return this.remove(length-1);
+    // 删除尾节点
+    remove_tail = function () {
+        return this.remove(length - 1);
     };
 
     // 删除头节点
-    remove_head = function(){
+    remove_head = function () {
         return this.remove(0);
     };
 
     // 返回链表头节点的值
-    head = function(){
+    getHead = function () {
         return this.get(0);
-    }
+    };
 
     // 返回链表尾节点的值
-    tail = function(){
-        return this.get(length-1);
-    }
+    getTail = function () {
+        return this.get(length - 1);
+    };
 
     // isEmpty
-    isEmpty = function(){
+    isEmpty = function () {
         return length == 0;
     };
 
     // 清空链表
-    clear = function(){
+    clear = function () {
         head = null;
         tail = null;
         length = 0;
@@ -166,3 +165,5 @@ ll.insert(1, 5);
 
 ll.print();
 ll.get_node(1);
+
+console.log(ll.head());

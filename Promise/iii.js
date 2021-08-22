@@ -1,6 +1,6 @@
 function Promise(executor) {
     var _this = this;
-    this.state = "pending";
+    this.state = 'pending';
     this.value = undefined;
     this.reason = undefined;
     this.onFulfilledFunc = [];
@@ -13,17 +13,17 @@ function Promise(executor) {
     }
 
     function resolve(value) {
-        if (_this.state === "pending") {
+        if (_this.state === 'pending') {
             _this.value = value;
-            _this.state = "resolved";
+            _this.state = 'resolved';
             _this.onFulfilledFunc.forEach(f => f(value));
         }
     }
 
     function reject(reason) {
-        if (_this.state === "pending") {
+        if (_this.state === 'pending') {
             _this.reason = reason;
-            _this.state = "rejected";
+            _this.state = 'rejected';
             _this.onRejectedFunc.forEach(f => f(reason));
         }
     }
@@ -34,19 +34,19 @@ function Promise(executor) {
  * @param {Function} onFulfilled 成功态回调
  * @param {Function} onRejected 失败态回调
  */
-Promise.prototype.then = function(onFulfilled, onRejected) {
+Promise.prototype.then = function (onFulfilled, onRejected) {
     //解决值的传递，如果没给任何参数就使用默认回调，值的穿透
-    onFulfilled = typeof onFulfilled === "function" ? onFulfilled : val => val;
+    onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : val => val;
     onRejected =
-        typeof onRejected === "function"
+        typeof onRejected === 'function'
             ? onRejected
             : e => {
                   throw e;
               };
 
     var promise2 = new Promise((resolve, reject) => {
-        if (this.state === "pending") {
-            if (typeof onFulfilled === "function") {
+        if (this.state === 'pending') {
+            if (typeof onFulfilled === 'function') {
                 this.onFulfilledFunc.push(value => {
                     /**
                      * 2.2.4 onFulfilled or onRejected must not be called until the execution context stack contains only platform code.
@@ -70,7 +70,7 @@ Promise.prototype.then = function(onFulfilled, onRejected) {
                     });
                 });
             }
-            if (typeof onRejected === "function") {
+            if (typeof onRejected === 'function') {
                 this.onRejectedFunc.push(reason => {
                     setTimeout(() => {
                         try {
@@ -84,8 +84,8 @@ Promise.prototype.then = function(onFulfilled, onRejected) {
             }
         }
 
-        if (this.state === "resolved") {
-            if (typeof onFulfilled === "function") {
+        if (this.state === 'resolved') {
+            if (typeof onFulfilled === 'function') {
                 setTimeout(() => {
                     try {
                         let x = onFulfilled(this.value);
@@ -96,8 +96,8 @@ Promise.prototype.then = function(onFulfilled, onRejected) {
                 });
             }
         }
-        if (this.state === "rejected") {
-            if (typeof onRejected === "function") {
+        if (this.state === 'rejected') {
+            if (typeof onRejected === 'function') {
                 setTimeout(() => {
                     try {
                         let x = onRejected(this.reason);
@@ -124,15 +124,15 @@ Promise.prototype.then = function(onFulfilled, onRejected) {
  */
 function resolvePromise(promise2, x, resolve, reject) {
     if (promise2 === x) {
-        reject(new TypeError("Promise发生了循环引用"));
+        reject(new TypeError('Promise发生了循环引用'));
     }
 
     let called = false; //调用标记，防止成功和失败都调用
-    if (x !== null && (typeof x === "object" || typeof x === "function")) {
+    if (x !== null && (typeof x === 'object' || typeof x === 'function')) {
         //是对象或函数
         try {
             let then = x.then;
-            if (typeof then === "function") {
+            if (typeof then === 'function') {
                 //如果是Promise就执行它，继续递归
                 then.call(
                     x,
@@ -163,11 +163,160 @@ function resolvePromise(promise2, x, resolve, reject) {
 
 let p = new Promise((a, b) => {
     setTimeout(() => {
-      a('333')
-    }, 1000)
-}).then(value => {
-    console.log(value);
-    return 3
-}).then((x)=>{
-    console.log(x);
+        a('333');
+    }, 1000);
 })
+    .then(value => {
+        console.log(value);
+        return 3;
+    })
+    .then(x => {
+        console.log(x);
+    });
+
+Promise.all = promiseArr => {
+    let res = [];
+    let index = 0;
+
+    return new Promise((resolve, reject) => {
+        promiseArr.forEach((p, i) => {
+            Promise.resolve(p)
+                .then(r => {
+                    res[i] = r;
+                    index++;
+
+                    if (index === promiseArr.length) {
+                        resolve(res);
+                    }
+                })
+                .catch(err => reject(err));
+        });
+    });
+};
+
+Promise.race = promiseArr => {
+    return new Promise((reslove, reject) => {
+        promiseArr.forEach(p => {
+            Promise.resolve(p)
+                .then(res => {
+                    reslove(res);
+                })
+                .catch(err => reject(err));
+        });
+    });
+};
+
+function red() {
+    console.log('red');
+}
+function green() {
+    console.log('green');
+}
+function yellow() {
+    console.log('yellow');
+}
+
+const light = (time, cb) =>
+    new Promise(resolve => {
+        setTimeout(() => {
+            cb();
+            resolve();
+        }, time);
+    });
+
+const step = () =>
+    Promise.resolve()
+        .then(() => light(1000, red))
+        .then(() => light(2000, green))
+        .then(() => light(3000, yellow))
+        .then(() => {
+            return step();
+        });
+
+step();
+
+function reduce(arr, cb, init) {
+    for (let i = 0; i < arr.length; i++) {
+        const item = arr[i];
+
+        init = cb(init, item, i, arr);
+    }
+
+    return init;
+}
+
+function myInstanceof(obj, con) {
+    let proto = Object.getPrototypeOf(obj);
+    let prototype = con.prototype;
+
+    while (true) {
+        if (proto === prototype) return true;
+        if (prototype === null) return false;
+
+        prototype = Object.getPrototypeOf(prototype);
+    }
+}
+
+function applyy(fn, thisArg, ...args) {
+    const temp = Symbol();
+    thisArg[temp] = fn;
+    const res = thisArg[temp](...args);
+
+    delete thisArg[temp];
+
+    return res;
+}
+
+var urls = [
+    'https://i.gsxcdn.com/1138845330_rit2wl87.png',
+    'https://i.gsxcdn.com/1138415037_70xx0k8u.png',
+    'https://p.gsxcdn.com/1136513227_vwlsmnwr.png',
+    'https://p.gsxcdn.com/1136893614_k1ev9sha.png',
+    'https://i.gsxcdn.com/1134314385_gwb1ygdu.png',
+    'https://p.gsxcdn.com/1221647374_bfmovo4g.jpg',
+    'https://p.gsxcdn.com/1187148362_bm8o1tcv.png',
+    'https://p.gsxcdn.com/1134294760_z6gsbj52.png',
+    'https://i.gsxcdn.com/1134343869_o2qydx89.png',
+];
+function loadImg(url) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = function () {
+            console.log('一张图片加载完成');
+            resolve(img);
+        };
+        img.onerror = function () {
+            reject(new Error('Could not load image at' + url));
+        };
+        img.src = url;
+    });
+}
+
+function limitLoad(urls, handler, limit) {
+    const group1 = urls
+        .splice(0, 3)
+        .map((url, index) => handler(url).then(() => index));
+
+    return group1
+        .reduce(
+            (pendingGroup, url, index) =>
+                pendingGroup
+                    .then(() => Promise.race(group1))
+                    .then(fastIndex => {
+                        group1[fastIndex] = handler(url).then(() => fastIndex);
+                    })
+                    .catch(err => console.log(err)),
+            Promise.resolve()
+        )
+        .then(() => {
+            return Promise.all(group1);
+        });
+}
+
+limitLoad(urls, loadImg, 3)
+    .then(res => {
+        console.log('done');
+    })
+    .catch(err => {
+        console.log(err);
+    });
