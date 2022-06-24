@@ -8,6 +8,7 @@ var lengthOfLongestSubstring = function(s) {
     let r = -1;
     let freq = new Array(256).fill(0);
     let res = 0;
+
     while (l < s.length) {
         if (r + 1 < s.length && freq[s[r + 1].charCodeAt()] === 0) {
             freq[s[++r].charCodeAt()]++;

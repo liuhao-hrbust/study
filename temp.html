@@ -14,14 +14,33 @@
         </style>
     </head>
     <body>
-        <div style="float: left">
+        <script>
+            function baz() {
+                console.log('baz')
+                bar();
+            }
+
+            function bar() {
+                console.log('bar')
+                foo()
+            }
+
+            function foo() {
+                let a = 1;
+                var b = 4;
+                debugger
+                console.log('foo')
+            }
+
+            baz()
+        </script>
+        <!-- <div style="float: left">
             两栏布局两栏布局两栏布局两栏布局两栏布局两栏布局两栏布局两栏布局两栏布局两栏布局两栏布局两栏布局两栏布局
         </div>
         <p>
             <div style="width: 300px;">
                 我是蛙人，如有帮助请点个赞叭，如有帮助请点个赞叭，如有帮助请点个赞叭，如有帮助请点个赞叭，如有帮助请点个赞叭，如有帮助请点个赞叭
             </div>
-        </p>
-        
+        </p> -->
     </body>
 </html>

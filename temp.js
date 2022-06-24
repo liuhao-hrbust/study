@@ -454,10 +454,35 @@ function quickSort(arr) {
     for (let i = 0; i < arr.length; i++) {
         const element = arr[i];
         if (element < midItem) {
-            left.push(element)
-        }
-        else {
+            left.push(element);
+        } else {
             right.push(element);
         }
     }
+}
+
+Promise.resolve()
+    .then(() => {
+        console.log(11);
+    })
+    .then(() => console.log(12))
+    .then(() => console.log(13))
+    .then(() => console.log(14))
+    .then(() => console.log(15));
+Promise.resolve()
+    .then(() => {
+        console.log(21);
+    })
+    .then(() => console.log(22))
+    .then(() => console.log(23))
+    .then(() => console.log(24))
+    .then(() => console.log(25));
+
+
+function myNew(con, ...args) {
+    let obj = {};
+    Object.setPrototypeOf(obj.prototype, con.prototype)
+    res = con.bind(obj, ...args);
+
+    return typeof res === 'object' ? res : {};
 }

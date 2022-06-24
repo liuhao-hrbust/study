@@ -31,7 +31,7 @@ function reverse_iter(head) {
     let prev = null;
     let current = head;
 
-    while(current) {
+    while (current) {
         let next = current.next;
         current.next = prev;
         prev = current;
@@ -43,5 +43,4 @@ function reverse_iter(head) {
 // 递归翻转
 function reverse_digui(head) {}
 
-print(reverse_iter(node1))
-
+print(reverse_iter(node1));
